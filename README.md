@@ -76,8 +76,7 @@ No configuration avaiable yet.
 
 ## Known issues
 
-- It interfiers with Lsp diagnostics signs.
-  Temporary fix: disable Lsp diagnostic signs altogether.
+- It interfiers with Lsp diagnostics signs. Temporary fix: disable Lsp diagnostic signs altogether.
   ```lua
   vim.diagnostic.config({
       signs = false
@@ -85,6 +84,6 @@ No configuration avaiable yet.
   ```
 
 
-  ## Thanks to
+## Thanks to
 
-  - ChatGPT
+- ChatGPT
