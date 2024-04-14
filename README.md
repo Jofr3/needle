@@ -5,7 +5,7 @@
 
 ## What does it do?
 
-- Lets you create marks, and assigns an avaiable letter automaticly, from `q` to `m`.
+- Lets you create marks, and assigns an available letter automaticly, from `q` to `m`.
 - It renames all of the marks when adding or removing them, so the keybinds stay relative to the order of the marks.
 - It displays the marks and its positions in the signcolumn.
 
