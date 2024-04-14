@@ -77,11 +77,12 @@ No configuration avaiable yet.
 ## Known issues
 
 - It interfiers with Lsp diagnostics signs. Temporary fix: disable Lsp diagnostic signs altogether.
-  ```lua
-  vim.diagnostic.config({
-      signs = false
-  })
-  ```
+
+```lua
+vim.diagnostic.config({
+    signs = false
+})
+```
 
 
 ## Thanks to
