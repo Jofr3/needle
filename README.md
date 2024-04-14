@@ -27,10 +27,10 @@ return {
 
 ## Usage
 
-- `:NeedleAddMark` to add a mark at the cursor
-- `:NeedleJumpToMark [a-z]` to jump to [a-z] mark
-- `:NeedleDeleteMark` to delete the mark at the cursor
-- `:NeedleClearMarks` to delete all local marks
+- `:NeedleAddMark` to add a mark at the cursor.
+- `:NeedleJumpToMark [a-z]` to jump to [a-z] mark.
+- `:NeedleDeleteMark` to delete the mark at the cursor.
+- `:NeedleClearMarks` to delete all local marks.
 
 
 ## Example keybinds
@@ -55,7 +55,7 @@ keys = {
 
 ### Lua
 
-```
+```lua
 vim.keymap.set("n", "<C-m>", ":NeedleAddMark<CR>", { silent = true })
 vim.keymap.set("n", "<C-x>", ":NeedleDeleteMark<CR>", { silent = true })
 vim.keymap.set("n", "<Leader>x", ":NeedleClearMarks<CR>", { silent = true })
