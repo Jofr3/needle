@@ -2,13 +2,11 @@
 
 `Needle` is a Neovim plugin for easily managing and vewing local marks.
 
-
 ## What does it do?
 
 - Lets you create marks, and assigns an available letter automaticly, from `q` to `m`.
 - It renames all of the marks when adding or removing them, so the keybinds stay relative to the order of the marks.
 - It displays the marks on the signcolumn.
-
 
 ## Installation
 
@@ -24,14 +22,12 @@ return {
 }
 ```
 
-
 ## Usage
 
 - `:NeedleAddMark` to add a mark at the cursor.
 - `:NeedleJumpToMark [a-z]` to jump to [a-z] mark.
 - `:NeedleDeleteMark` to delete the mark at the cursor.
 - `:NeedleClearMarks` to delete all local marks.
-
 
 ## Example keybinds
 
@@ -52,7 +48,6 @@ keys = {
 }
 ```
 
-
 ### Lua
 
 ```lua
@@ -68,14 +63,15 @@ vim.keymap.set("n", "<Leader>t", ":NeedleJumpToMark t<CR>", { silent = true })
 vim.keymap.set("n", "<Leader>y", ":NeedleJumpToMark y<CR>", { silent = true })
 ```
 
-
 ## Configuration
 
 No configuration avaiable yet.
 
-
 ## Known issues
 
+- Terrible preformance in large files.
+- Sometimes deleting all marks when restarting nvim.
+- Error when loading files in special buffers. 
 - It interfiers with Lsp diagnostics signs. Temporary fix: disable Lsp diagnostic signs altogether.
 
 ```lua
@@ -83,8 +79,3 @@ vim.diagnostic.config({
     signs = false
 })
 ```
-
-
-## Thanks to
-
-- ChatGPT
