@@ -2,13 +2,20 @@ local marks = require("needle.marks")
 
 local M = {}
 
+local group = vim.api.nvim_create_augroup("Needle", { clear = true })
+
+local function auto_cmds()
+    vim.api.nvim_create_autocmd("BufEnter", {
+        group = group,
+        pattern = "*",
+        callback = function()
+            marks.buf_enter()
+        end,
+    })
+end
+
 function M.setup()
-	vim.api.nvim_create_user_command("NeedleClearMarks", marks.clear_marks, {})
-	vim.api.nvim_create_user_command("NeedleAddMark", marks.add_mark, {})
-	vim.api.nvim_create_user_command("NeedleDeleteMark", marks.delete_mark, {})
-	vim.api.nvim_create_user_command("NeedleJumpToMark", function(opts)
-		marks.jump_to_mark(opts.args)
-	end, { nargs = 1 })
+    auto_cmds()
 end
 
 return M

@@ -2,28 +2,23 @@ local ui = require("needle.ui")
 
 local M = {}
 
+local buffer_name
 local mark_chars = "qwertyuipasdfghjklzxcvbnm"
+local mark_counter = 1
 
 local function get_marks()
-	local marks = {}
+    local marks = {}
 
-	for mark in mark_chars:gmatch(".") do
-		local pos = vim.api.nvim_buf_get_mark(0, mark)
-		if pos[1] ~= 0 then
-			table.insert(marks, pos)
-		end
-	end
+    for mark in mark_chars:gmatch(".") do
+        local pos = vim.api.nvim_buf_get_mark(0, mark)
+        if pos[1] ~= 0 then
+            table.insert(marks, { mark, pos })
+        end
+    end
 
-	return marks
+    return marks
 end
 
-function M.clear_marks()
-	for mark in mark_chars:gmatch(".") do
-		vim.api.nvim_buf_del_mark(0, mark)
-	end
-
-    M.setup_signcol()
-end
 
 function M.jump_to_mark(mark)
     local pos = vim.api.nvim_buf_get_mark(0, mark)
@@ -32,79 +27,127 @@ function M.jump_to_mark(mark)
     end
 end
 
-function M.check_marks(pos)
-	local current_marks = get_marks()
-	for key, mark in ipairs(current_marks) do
-        if mark[1] == pos[1] and mark[2] == pos[2] then
+local function check_marks(marks, pos)
+    for i, mark in ipairs(marks) do
+        if mark[2][1] == pos[1] then
             return true
         end
-	end
+    end
     return false
 end
 
-local function sort_marks(marks)
-    table.sort(marks, function(a, b)
-        if a[1] == b[1] then
-            return a[2] < b[2]
-        end
-        return a[1] < b[1]
-    end)
-
-    return marks
-end
-
-local function get_mark_signs()
-    local marks = get_marks()
-    local mark_signs = {}
-
-    for key, mark in ipairs(marks) do
-        local char = string.sub(mark_chars, key, key)
-        table.insert(mark_signs, { char, mark })
+function M.clear_marks()
+    for mark in mark_chars:gmatch(".") do
+        vim.api.nvim_buf_del_mark(0, mark)
     end
 
-    return mark_signs
-end
-
-local function set_marks()
-    local marks = sort_marks(get_marks())
-
-	M.clear_marks()
-
-	for key, mark in ipairs(marks) do
-        local char = string.sub(mark_chars, key, key)
-		vim.api.nvim_buf_set_mark(0, char, mark[1], mark[2], {})
-	end
-
-    M.setup_signcol()
+    ui.clear_marks()
+    vim.cmd("wshada!")
 end
 
 function M.add_mark()
-    if M.check_marks(vim.api.nvim_win_get_cursor(0)) then
+    if not buffer_name then
+        print("Can't add mark!")
         return
     end
 
-	local pos = vim.api.nvim_win_get_cursor(0)
-	vim.api.nvim_buf_set_mark(0, "m", pos[1], pos[2], {})
+    if mark_counter == #mark_chars then
+        print("Can't add more marks!")
+        return
+    end
 
-    set_marks()
+    local marks = get_marks()
+    local pos = vim.api.nvim_win_get_cursor(0)
+    if check_marks(marks, pos) then
+        print("Already a mark in this line!")
+        return
+    end
+
+    if #marks ~= 0 then
+        mark_counter = #marks + 1
+    end
+
+    local new_char = string.sub(mark_chars, mark_counter, mark_counter)
+    vim.api.nvim_buf_set_mark(0, new_char, pos[1], 0, {})
+
+    table.insert(marks, { new_char, pos })
+    table.sort(marks, function(a, b)
+        return a[2][1] < b[2][1]
+    end)
+
+    for i, mark in ipairs(marks) do
+        local char = string.sub(mark_chars, i, i)
+        vim.api.nvim_buf_set_mark(0, char, mark[2][1], 0, {})
+    end
+
+    local new_marks = get_marks()
+    ui.load_marks(new_marks, buffer_name)
+    vim.cmd("wshada!")
 end
 
 function M.delete_mark()
-    local pos = vim.api.nvim_win_get_cursor(0)
     local marks = get_marks()
 
-    for key, mark in ipairs(marks) do
-        if mark[1] == pos[1] then
-            local char = string.sub(mark_chars, key, key)
+    if #marks == 0 then
+        return
+    end
+
+    local pos = vim.api.nvim_win_get_cursor(0)
+    for i, mark in ipairs(marks) do
+        if mark[2][1] == pos[1] then
+            local char = string.sub(mark_chars, i, i)
             vim.api.nvim_buf_del_mark(0, char)
+            table.remove(marks, i)
+            break
         end
     end
 
-    set_marks()
+    table.sort(marks, function(a, b)
+        return a[2][1] < b[2][1]
+    end)
+
+    M.clear_marks()
+
+    for i, mark in ipairs(marks) do
+        local char = string.sub(mark_chars, i, i)
+        vim.api.nvim_buf_set_mark(0, char, mark[2][1], 0, {})
+    end
+
+    mark_counter = mark_counter > 1 and mark_counter - 1 or mark_counter
+    local new_marks = get_marks()
+    ui.load_marks(new_marks, buffer_name)
+    vim.cmd("wshada!")
 end
 
-function M.setup_signcol()
-    ui.setup_signcol(get_mark_signs(), vim.api.nvim_get_current_buf())
+local function load_marks(marks)
+    ui.clear_marks()
+    ui.sign_cache = {}
+
+    table.sort(marks, function(a, b)
+        return a[2][1] < b[2][1]
+    end)
+
+    for i, mark in ipairs(marks) do
+        local char = string.sub(mark_chars, i, i)
+        vim.api.nvim_buf_set_mark(0, char, mark[2][1], 0, {})
+    end
+
+    local new_marks = get_marks()
+    print(vim.inspect(new_marks))
+    ui.load_marks(new_marks, buffer_name)
+end
+
+function M.buf_enter()
+    buffer_name = vim.api.nvim_buf_get_name(0)
+    if not buffer_name then
+        return
+    end
+
+    local marks = get_marks()
+    if #marks ~= 0 then
+        mark_counter = #marks + 1
+        load_marks(marks)
+    end
 end
 
 return M

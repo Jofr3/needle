@@ -1,44 +1,29 @@
 local M = {}
 
-local sign_group = "NeedleSigns"
+M.sign_cache = {}
 
-local function setup_placehorlders(bufnr)
-	local max_lines = vim.api.nvim_buf_line_count(bufnr)
+function M.load_marks(marks, buffer_name)
+    vim.opt.signcolumn = "auto"
+    vim.fn.sign_unplace("NeedleSigns", { buffer = buffer_name })
 
-	for i = 1, max_lines do
-	    vim.fn.sign_define("PlaceholderSign" .. i, { text = " ", texthl = "GruvboxPurple" })
-		vim.fn.sign_place(0, "NeedleSigns", "PlaceholderSign" .. i, bufnr, { lnum = i, priority = 1 })
-	end
+    if #marks == 0 then
+        return
+    end
+
+    for id, mark in ipairs(marks) do
+        if not M.sign_cache[mark] then
+            vim.fn.sign_define("NeedleMark" .. id, { text = mark[1], texthl = "GruvboxPurple" })
+        end
+
+        vim.fn.sign_place(id, "NeedleSigns", "NeedleMark" .. id, buffer_name, { lnum = mark[2][1], priority = 10 })
+    end
 end
 
-local function def_mark_sign(marks)
-	for key, mark in ipairs(marks) do
-		vim.fn.sign_define("Mark" .. mark[1], { text = mark[1], texthl = "GruvboxPurple" })
-	end
-end
+function M.clear_marks()
+    vim.fn.sign_undefine()
+    vim.fn.sign_unplace("*", { buffer = 0 })
 
-local function place_mark_sign(marks, bufnr)
-	for key, mark in ipairs(marks) do
-        vim.fn.sign_undefine("PlaceholderSign" .. mark[2][1])
-		vim.fn.sign_unplace("PlaceholderSign" .. mark[2][1], { buffer = bufnr })
-		vim.fn.sign_place(key, sign_group, "Mark" .. mark[1], bufnr, { lnum = mark[2][1], priority = 1 })
-	end
-end
-
-function M.setup_signcol(marks, bufnr)
-	vim.fn.sign_undefine()
-	vim.fn.sign_unplace("Mark*", { buffer = bufnr })
-
-	if #marks == 0 then
-		vim.opt.signcolumn = "yes:1"
-		return
-	end
-
-	vim.opt.signcolumn = "yes:2"
-
-	setup_placehorlders(bufnr)
-	def_mark_sign(marks)
-	place_mark_sign(marks, bufnr)
+    vim.opt.signcolumn = "auto"
 end
 
 return M
