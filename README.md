@@ -30,7 +30,7 @@ return {
 ## Usage
 
 - `:lua require('needle.marks').add_mark()` to add a mark at the cursor.
-- `:lua require('needle.marks').jump_to_mark([a-z])` to jump to [a-z] mark.
+- `:lua require('needle.marks').jump_to_mark('[a-z]')` to jump to [a-z] mark.
 - `:lua require('needle.marks').delete_mark()` to delete the mark at the cursor.
 - `:lua require('needle.marks').clear_marks()` to delete all local marks.
 
@@ -44,11 +44,11 @@ keys = {
     { "<C-x>", "<cmd>:lua require('needle.marks').delete_mark()<cr>", remap = true, desc = "Delete mark" },
     { "<Leader>x", "<cmd>:lua require('needle.marks').clear_marks()<cr>", remap = true, desc = "Clear marks" },
 
-    { "<Leader>q", "<cmd>:lua require('needle.marks').jump_to_mark(q)<cr>", remap = true, desc = "Jump to mark q" },
-    { "<Leader>w", "<cmd>:lua require('needle.marks').jump_to_mark(w)<cr>", remap = true, desc = "Jump to mark w" },
-    { "<Leader>e", "<cmd>:lua require('needle.marks').jump_to_mark(e)<cr>", remap = true, desc = "Jump to mark e" },
-    { "<Leader>r", "<cmd>:lua require('needle.marks').jump_to_mark(r)<cr>", remap = true, desc = "Jump to mark r" },
-    { "<Leader>t", "<cmd>:lua require('needlel.marks').jump_to_mark(t)<cr>", remap = true, desc = "Jump to mark t" },
+    { "<Leader>q", "<cmd>:lua require('needle.marks').jump_to_mark('q')<cr>", remap = true, desc = "Jump to mark q" },
+    { "<Leader>w", "<cmd>:lua require('needle.marks').jump_to_mark('w')<cr>", remap = true, desc = "Jump to mark w" },
+    { "<Leader>e", "<cmd>:lua require('needle.marks').jump_to_mark('e')<cr>", remap = true, desc = "Jump to mark e" },
+    { "<Leader>r", "<cmd>:lua require('needle.marks').jump_to_mark('r')<cr>", remap = true, desc = "Jump to mark r" },
+    { "<Leader>t", "<cmd>:lua require('needle.marks').jump_to_mark('t')<cr>", remap = true, desc = "Jump to mark t" },
     -- ...
 }
 ```
@@ -60,11 +60,11 @@ vim.keymap.set("n", "<C-l>", ":lua require('needle.marks').add_mark()<CR>")
 vim.keymap.set("n", "<C-x>", ":lua require('needle.marks').delete_mark()<CR>")
 vim.keymap.set("n", "<Leader>x", ":lua require('needle.marks').clear_marks()<CR>")
 
-vim.keymap.set("n", "<Leader>q", ":lua require('needle.marks').jump_to_mark(q)<CR>")
-vim.keymap.set("n", "<Leader>w", ":lua require('needle.marks').jump_to_mark(w)<CR>")
-vim.keymap.set("n", "<Leader>e", ":lua require('needle.marks').jump_to_mark(e)<CR>")
-vim.keymap.set("n", "<Leader>r", ":lua require('needle.marks').jump_to_mark(r)<CR>")
-vim.keymap.set("n", "<Leader>t", ":lua require('needle.marks').jump_to_mark(t)<CR>")
+vim.keymap.set("n", "<Leader>q", ":lua require('needle.marks').jump_to_mark('q')<CR>")
+vim.keymap.set("n", "<Leader>w", ":lua require('needle.marks').jump_to_mark('w')<CR>")
+vim.keymap.set("n", "<Leader>e", ":lua require('needle.marks').jump_to_mark('e')<CR>")
+vim.keymap.set("n", "<Leader>r", ":lua require('needle.marks').jump_to_mark('r')<CR>")
+vim.keymap.set("n", "<Leader>t", ":lua require('needle.marks').jump_to_mark('t')<CR>")
 -- ...
 ```
 
