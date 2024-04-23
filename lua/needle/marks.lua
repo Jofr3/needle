@@ -2,7 +2,7 @@ local ui = require("needle.ui")
 
 local M = {}
 
-local buffer_name
+local buffer_name = ""
 local mark_chars = "qwertyuipasdfghjklzxcvbnm"
 local mark_counter = 1
 
@@ -138,7 +138,7 @@ end
 
 function M.buf_enter()
     buffer_name = vim.api.nvim_buf_get_name(0)
-    if not buffer_name then
+    if buffer_name == "" then
         return
     end
 
