@@ -133,7 +133,6 @@ local function load_marks(marks)
     end
 
     local new_marks = get_marks()
-    print(vim.inspect(new_marks))
     ui.load_marks(new_marks, buffer_name)
 end
 
