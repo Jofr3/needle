@@ -41,6 +41,7 @@ function M.clear_marks()
         vim.api.nvim_buf_del_mark(0, mark)
     end
 
+    mark_counter = 1
     ui.clear_marks()
     vim.cmd("wshada!")
 end

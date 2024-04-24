@@ -10,6 +10,8 @@
   
 ## Demo
 
+![demo](demo.gif)
+
 ## Why?
 
 When I first discovered local marks in `Neovim` I saw a lot of potential in them, but the lack of speed, flexibility and ease of use kept me from using them. After some searching, I didn't fine a solution that satisfied me, so I took it upon myself. This plugin is heavily inspired by `Harpoon` (hence this plugin name), since it also deals with marks, but just global ones. I wanted a similar experience when it comes to ease of use and flexibility.
