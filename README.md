@@ -10,7 +10,7 @@
   
 ## Demo
 
-![demo](demo.gif)
+![demo](https://i.imgur.com/UMlThqn.gif)
 
 ## Why?
 
