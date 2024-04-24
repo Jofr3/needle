@@ -74,6 +74,13 @@ vim.keymap.set("n", "<Leader>t", ":lua require('needle.marks').jump_to_mark('t')
 
 No configuration avaiable yet.
 
+## To do
+
+- Configuration.
+- Use `m` key for motions.
+- Use marks with verbs (change, select, delete, ...).
+- Jump to next and previouse mark.
+
 ## Known issues
 
 - It interferes with Lsp diagnostics signs. Temporary fix: disable Lsp diagnostic signs altogether.
@@ -83,3 +90,8 @@ vim.diagnostic.config({
     signs = false
 })
 ```
+
+## Similar plugins
+
+- [marks.nvim](https://github.com/chentoast/marks.nvim)
+- [Harpoon](https://github.com/ThePrimeagen/harpoon)
