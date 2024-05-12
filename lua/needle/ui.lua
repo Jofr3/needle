@@ -6,13 +6,13 @@ function M.clear_signs()
 	vim.fn.sign_unplace("*")
 end
 
-function M.load_signs(marks, buffer_name)
-	for id, mark in ipairs(marks) do
-		if not signs_cache[mark[1]] then
-			signs_cache[mark[1]] = true
-			vim.fn.sign_define("NeedleMark" .. mark[1], { text = mark[1], texthl = "GruvboxPurple" })
+function M.load_signs(chars, positions, buffer_name)
+	for id, char in ipairs(chars) do
+		if not signs_cache[char] then
+			signs_cache[char] = true
+			vim.fn.sign_define("NeedleMark" .. char, { text = char, texthl = "GruvboxPurple" })
 		end
-		vim.fn.sign_place(id, "NeedleSigns", "NeedleMark" .. mark[1], buffer_name, { lnum = mark[2], priority = 10 })
+		vim.fn.sign_place(id, "NeedleSigns", "NeedleMark" .. char, buffer_name, { lnum = positions[id], priority = 10 })
 	end
 end
 
