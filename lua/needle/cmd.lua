@@ -27,7 +27,15 @@ local function auto_cmds()
 		group = group,
 		pattern = "*",
 		callback = function()
-			mark.update_marks()
+			-- mark.update_marks()
+		end,
+	})
+
+	vim.api.nvim_create_autocmd({ "VimLeavePre" }, {
+		group = group,
+		pattern = "*",
+		callback = function()
+			mark.clear_cache()
 		end,
 	})
 end

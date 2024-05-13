@@ -82,45 +82,44 @@ function M.jump_to_mark(char)
 	end
 end
 
-function M.jump_to_next()
-	local current_pos = vim.api.nvim_win_get_cursor(0)[1]
-	for i, pos in ipairs(current_marks[2]) do
-		if current_pos == pos and #current_marks[2] ~= i then
-			vim.api.nvim_win_set_cursor(0, { current_marks[2][i + 1], 0 })
-			return
+local function find_insert_position(arr, value)
+	local low = 1
+	local high = #arr
+	while low <= high do
+		local mid = math.floor((low + high) / 2)
+		if arr[mid] < value then
+			low = mid + 1
+		else
+			high = mid - 1
 		end
 	end
+	return low
+end
 
-	for i, pos in ipairs(current_marks[2]) do
-		if i == 1 then
-			if current_pos > 0 and current_pos < pos then
-				vim.api.nvim_win_set_cursor(0, { pos, 0 })
-				return
-			end
-		else
-			if current_pos > current_marks[2][i - 1] and current_pos < pos then
-				vim.api.nvim_win_set_cursor(0, { pos, 0 })
-				return
-			end
-		end
+function M.jump_to_next()
+	if #current_marks[1] == 0 then
+		return
+	end
+
+	local current_pos = vim.api.nvim_win_get_cursor(0)[1]
+	local position = find_insert_position(current_marks[2], current_pos)
+	-- buggy the clown
+	if position ~= #current_marks[2] then
+		vim.api.nvim_win_set_cursor(0, { current_marks[2][position + 1], 0 })
+	elseif position == 1 then
+		vim.api.nvim_win_set_cursor(0, { current_marks[2][position], 0 })
 	end
 end
 
 function M.jump_to_prev()
-	local current_pos = vim.api.nvim_win_get_cursor(0)[1]
-	for i, pos in ipairs(current_marks[2]) do
-		if current_pos == pos and i ~= 1 then
-			vim.api.nvim_win_set_cursor(0, { current_marks[2][i - 1], 0 })
-		end
+	if #current_marks[1] == 0 then
+		return
 	end
 
-	for i, pos in ipairs(current_marks[2]) do
-		if i ~= 1 then
-			if current_pos > current_marks[2][i - 1] and current_pos < pos then
-				vim.api.nvim_win_set_cursor(0, { current_marks[2][i - 1], 0 })
-				return
-			end
-		end
+	local current_pos = vim.api.nvim_win_get_cursor(0)[1]
+	local position = find_insert_position(current_marks[2], current_pos)
+	if position ~= 1 then
+		vim.api.nvim_win_set_cursor(0, { current_marks[2][position - 1], 0 })
 	end
 end
 
@@ -134,7 +133,26 @@ function M.clear_marks()
 	oi.write_data(needle_data)
 end
 
+function M.clear_cache()
+	needle_data = needle_data or {}
+	for filename, marks in pairs(needle_data) do
+		if #marks[1] == 0 then
+			needle_data[filename] = nil
+		end
+	end
+
+	oi.write_data(needle_data)
+end
+
 function M.update_marks()
+	if current_buffer == "" then
+		return
+	end
+
+	if #current_marks[1] == 0 then
+		return
+	end
+
 	local buffer_signs = vim.fn.sign_getplaced(current_buffer, { group = "NeedleSigns" })
 	local signs = buffer_signs[1]["signs"]
 
