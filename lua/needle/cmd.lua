@@ -82,14 +82,14 @@ local function mapings_cmds()
 
 	vim.api.nvim_set_keymap(
 		"n",
-		"m[",
+		"m]",
 		"<cmd>:lua require('needle.mark').jump_to_next()<cr>",
 		{ noremap = true, silent = true }
 	)
 
 	vim.api.nvim_set_keymap(
 		"n",
-		"m]",
+		"m[",
 		"<cmd>:lua require('needle.mark').jump_to_prev()<cr>",
 		{ noremap = true, silent = true }
 	)
