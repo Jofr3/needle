@@ -15,7 +15,7 @@ local function auto_cmds()
 		end,
 	})
 
-	vim.api.nvim_create_autocmd({ "BufLeave", "VimLeavePre" }, {
+	vim.api.nvim_create_autocmd({ "BufLeave" }, {
 		group = group,
 		pattern = "*",
 		callback = function()
@@ -27,7 +27,7 @@ local function auto_cmds()
 		group = group,
 		pattern = "*",
 		callback = function()
-			-- mark.update_marks()
+			mark.update_marks()
 		end,
 	})
 

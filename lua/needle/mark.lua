@@ -103,10 +103,16 @@ function M.jump_to_next()
 
 	local current_pos = vim.api.nvim_win_get_cursor(0)[1]
 	local position = find_insert_position(current_marks[2], current_pos)
-	-- buggy the clown
-	if position ~= #current_marks[2] then
+
+	if position == #current_marks[2] then
+		return
+	end
+
+	if current_marks[2][position] == current_pos then
 		vim.api.nvim_win_set_cursor(0, { current_marks[2][position + 1], 0 })
 	elseif position == 1 then
+		vim.api.nvim_win_set_cursor(0, { current_marks[2][position], 0 })
+	elseif position ~= 1 then
 		vim.api.nvim_win_set_cursor(0, { current_marks[2][position], 0 })
 	end
 end
