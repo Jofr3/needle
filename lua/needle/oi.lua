@@ -7,11 +7,13 @@ function M.read_data()
 	if file then
 		local output = file:read("*a")
 		file:close()
-		if output ~= "" then
-			return vim.json.decode(output)
+		if output == "null" or output == "" or output == nil then
+			return nil
+		else
+		 	return vim.json.decode(output)
 		end
 	end
-	return {}
+	return nil
 end
 
 function M.write_data(data)

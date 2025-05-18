@@ -2,7 +2,7 @@ local mark = require("needle.mark")
 
 local M = {}
 
-local mark_chars = "qwertyuiopasdfghjklzxcvbn"
+local mark_chars = { "q", "w", "e", "r", "t", "y", "u", "i", "o", "p" }
 
 local group = vim.api.nvim_create_augroup("Needle", { clear = true })
 
@@ -12,22 +12,6 @@ local function auto_cmds()
 		pattern = "*",
 		callback = function()
 			mark.buf_enter()
-		end,
-	})
-
-	vim.api.nvim_create_autocmd({ "BufLeave" }, {
-		group = group,
-		pattern = "*",
-		callback = function()
-			mark.save_marks()
-		end,
-	})
-
-	vim.api.nvim_create_autocmd({ "TextChanged", "TextChangedI" }, {
-		group = group,
-		pattern = "*",
-		callback = function()
-			mark.update_marks()
 		end,
 	})
 
@@ -71,18 +55,18 @@ local function mapings_cmds()
 		{ noremap = true, silent = true }
 	)
 
-	for char in mark_chars:gmatch(".") do
+	for index, char in ipairs(mark_chars) do
 		vim.api.nvim_set_keymap(
 			"n",
 			"m" .. char,
-			"<cmd>:lua require('needle.mark').jump_to_mark('" .. char .. "')<cr>",
+			"<cmd>:lua require('needle.mark').jump_to_mark('" .. index .. "')<cr>",
 			{ noremap = true, silent = true }
 		)
 	end
 
 	vim.api.nvim_set_keymap(
 		"n",
-		"m]",
+		"mm",
 		"<cmd>:lua require('needle.mark').jump_to_next()<cr>",
 		{ noremap = true, silent = true }
 	)
