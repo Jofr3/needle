@@ -158,6 +158,7 @@ function M.clear_marks()
 		return
 	end
 
+  current_marks = {}
 	needle_data[current_buffer] = nil
 
 	ui.clear_signs(current_buffer)
