@@ -9,7 +9,7 @@ end
 function M.load_signs(marks, chars, buffer_name)
 	local keys = {}
 	for key, _ in pairs(marks) do
-		table.insert(keys, key)
+		table.insert(keys, tonumber(key))
 	end
 
 	table.sort(keys)

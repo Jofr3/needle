@@ -31,9 +31,11 @@ local function user_cmds()
 	vim.api.nvim_create_user_command("NeedleJumpToMark", function(opts)
 		mark.jump_to_mark(opts.args)
 	end, { nargs = 1 })
+	vim.api.nvim_create_user_command("NeedleJumpToNext", mark.jump_to_next, {})
+	vim.api.nvim_create_user_command("NeedleJumpToPrev", mark.jump_to_prev, {})
 end
 
-local function mapings_cmds()
+local function mappings_cmds()
 	vim.api.nvim_set_keymap(
 		"n",
 		"M",
@@ -66,7 +68,7 @@ local function mapings_cmds()
 
 	vim.api.nvim_set_keymap(
 		"n",
-		"mm",
+		"m]",
 		"<cmd>:lua require('needle.mark').jump_to_next()<cr>",
 		{ noremap = true, silent = true }
 	)
@@ -82,7 +84,7 @@ end
 function M.setup()
 	user_cmds()
 	auto_cmds()
-	mapings_cmds()
+	mappings_cmds()
 end
 
 return M

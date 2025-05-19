@@ -37,7 +37,6 @@ function M.add_mark()
 	ui.clear_signs(current_buffer)
 	ui.load_signs(current_marks, mark_chars, current_buffer)
 
-	print(current_buffer)
 	needle_data[current_buffer] = current_marks
 	oi.write_data(needle_data)
 end
