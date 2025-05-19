@@ -3,7 +3,7 @@ local ui = require("needle.ui")
 
 local M = {}
 
-local mark_chars = { "q", "w", "e", "r", "t", "y", "u", "i", "o", "p" }
+local mark_chars = { "q", "w", "e", "r", "t", "y", }
 
 local needle_data = {}
 
@@ -67,14 +67,14 @@ function M.jump_to_mark(index)
 
 	local positions = {}
 	for position, _ in pairs(current_marks) do
-		table.insert(positions, position)
+		table.insert(positions, tonumber(position))
 	end
 
 	table.sort(positions)
 
-	local position = positions[tonumber(index)]
+	local position = positions[index]
 	if position ~= nil then
-		vim.api.nvim_win_set_cursor(0, { tonumber(position), 0 })
+		vim.api.nvim_win_set_cursor(0, { position, 0 })
 	end
 end
 
