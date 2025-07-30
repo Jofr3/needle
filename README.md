@@ -1,6 +1,6 @@
 # needle.nvim
 
-`Needle` is a Neovim plugin designed for easy management, navigation, and viewing of local marks.
+`needle.nvim` is a Neovim plugin designed for easy management, navigation, and viewing of local marks.
 
 ## What does it do?
 
