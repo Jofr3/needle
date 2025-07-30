@@ -12,10 +12,6 @@
 
 ![demo](https://i.imgur.com/UMlThqn.gif)
 
-## Why?
-
-When I first discovered local marks in `Neovim`, I saw their potential, but their lack of speed, flexibility, and ease of use kept me from using them. After some searching, I didn't find a solution that satisfied me, so I took it upon myself. Inspired by Harpoon, which manages global marks, I aimed to achieve a similar level of ease and flexibility for local marks. Thus, this plugin was born.
-
 ## Installation
 
 ### Lazy
@@ -24,9 +20,7 @@ When I first discovered local marks in `Neovim`, I saw their potential, but thei
 return {
     "Jofr3/needle",
     lazy = false,
-    config = function()
-        require("needle").setup()
-    end
+    opts = {}
 }
 ```
 
